@@ -8,22 +8,22 @@ import { AuthContext } from '../../contexts/auth'
 
 export default function SignIn() {
 
-    
+
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
-    const { signIn } = useContext(AuthContext);
+    const { signIn, loadingAuth } = useContext(AuthContext);
 
-   async function handleSignIn(e){
+    async function handleSignIn(e) {
         e.preventDefault();
-       await signIn(email, password)
+        await signIn(email, password)
     }
 
     return (
         <div className="container-center">
             <div className="login">
                 <div className="login-area">
-                    <img src={logo} alt="GLPI" title='GLPI'/>
+                    <img src={logo} alt="GLPI" title='GLPI' />
                 </div>
 
                 <form onSubmit={handleSignIn}>
@@ -34,7 +34,7 @@ export default function SignIn() {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                     />
-                    
+
                     <input
                         type="password"
                         placeholder="Insira sua senha"
@@ -42,7 +42,9 @@ export default function SignIn() {
                         onChange={(e) => setPassword(e.target.value)}
                     />
 
-                    <button type='submit'>Acessar</button>
+                    <button type='submit'>
+                        {loadingAuth ? 'Carregando...' : 'Cadastrar'}
+                    </button>
 
                 </form>
 

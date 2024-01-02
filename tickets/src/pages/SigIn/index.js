@@ -12,7 +12,9 @@ export default function SignIn() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
-    const { signIn, loadingAuth } = useContext(AuthContext);
+    const { signIn, loadingAuth, signed } = useContext(AuthContext);
+
+    console.log('olha essa poha ', signed);
 
     async function handleSignIn(e) {
         e.preventDefault();

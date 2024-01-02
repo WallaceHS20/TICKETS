@@ -11,20 +11,25 @@ function AuthProvider({ children }) {
 
   const [user, setUser] = useState(null)
   const [loadingAuth, setLoadingAuth] = useState(null)
-  const [loading, setLoading] = useState(true)
   const navigate = useNavigate();
+  const [checkingStatus, setCheckingStatus] = useState(true);
 
   useEffect(() =>{
     async function loadUser(){
-      const userData = localStorage.getItem('@ticketsPRO')
+      const storageUser = localStorage.getItem('@ticketsPRO')
 
-      if(userData){
-        setUser(JSON.parse(userData))
-        setLoading(false)
+      if(storageUser){
+        const userData = JSON.parse(storageUser);
+        setUser(userData);
       }
 
-      setLoading(false)
     }
+
+    loadUser()
+    .then(() => {
+      setCheckingStatus(false); // Defina como false após a verificação
+    });
+    
   }, [])
 
   function storageUser(data) {
@@ -117,6 +122,7 @@ function AuthProvider({ children }) {
         signIn,
         signUp,
         logOut,
+        checkingStatus,
         loadingAuth
       }}
     >

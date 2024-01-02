@@ -4,13 +4,16 @@ import { AuthContext } from '../contexts/auth';
 
 export default function Private({ children }){
 
-    const { signed } = useContext(AuthContext)
-    
+    const { signed, checkingStatus } = useContext(AuthContext);
 
-    if(!signed){
-
-        return <Navigate to={"/"}/>
-    }
+    if (checkingStatus) {
+        return <div>Carregando...</div>;
+      }
     
-    return children;
+      if (!signed) {
+        return <Navigate to="/" />;
+      }
+    
+      return children;
+
 }

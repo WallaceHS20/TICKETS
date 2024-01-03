@@ -32,6 +32,7 @@ function AuthProvider({ children }) {
     
   }, [])
 
+  // FUNÇÃO PARA INSERIR OS DADOS DO USUÁRIO NO STORAGE
   function storageUser(data) {
     localStorage.setItem('@ticketsPRO', JSON.stringify(data))
   }
@@ -122,6 +123,8 @@ function AuthProvider({ children }) {
         signIn,
         signUp,
         logOut,
+        storageUser,
+        setUser,
         checkingStatus,
         loadingAuth
       }}

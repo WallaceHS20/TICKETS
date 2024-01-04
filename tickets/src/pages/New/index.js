@@ -90,7 +90,6 @@ export default function New() {
         <div>
             <Header />
 
-
             <div className='content'>
 
                 <Title name={'Novo Chamado'}>
@@ -148,9 +147,9 @@ export default function New() {
                             <input
                                 type='radio'
                                 name='radio'
-                                value={'Concluído'}
+                                value={'Concluido'}
                                 onChange={handleOptionChanged}
-                                checked={status === 'Concluído'}
+                                checked={status === 'Concluido'}
                             />
                             <span> Concluído </span>
                         </div>

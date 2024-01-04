@@ -30,7 +30,7 @@ export default function Profile(){
             setAvatarUrl(URL.createObjectURL(image))
         }
         else{
-            alert('Ta chapando ?')
+            toast.error('Arquivo Não Compatível !')
             setImageAvatar(null)
             return
         }

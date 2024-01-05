@@ -5,9 +5,10 @@ import { useState, useEffect, useContext } from 'react'
 import { useParams } from 'react-router-dom'
 import { db } from '../../services/firebaseConnection'
 import { AuthContext } from '../../contexts/auth'
-import { collection, getDoc, getDocs, doc, addDoc } from 'firebase/firestore'
+import { collection, getDoc, getDocs, doc, addDoc, updateDoc } from 'firebase/firestore'
 import './new.css'
 import { toast } from 'react-toastify'
+
 
 export default function New() {
 
@@ -21,29 +22,30 @@ export default function New() {
     const [assunto, setAssunto] = useState('Suporte Tecnico')
     const [status, setStatus] = useState('Aberto')
     const [customerSelected, setCustomerSelected] = useState(0)
+    const [idCustomer, setIdCustomer] = useState(false)
 
     function handleOptionChanged(e) {
         setStatus(e.target.value)
     }
 
-    async function loadId(lista){
+    async function loadId(lista) {
         const docRef = doc(db, "tickets", id);
         await getDoc(docRef)
-        .then((response) =>{
-            setAssunto(response.data().assunto)
-            setComplemento(response.data().complemento)
-            setStatus(response.data().status)
-            let index = lista.findIndex(item => item.id === response.data().clientId)
+            .then((response) => {
+                setAssunto(response.data().assunto)
+                setComplemento(response.data().complemento)
+                setStatus(response.data().status)
+                let index = lista.findIndex(item => item.id === response.data().clientId)
 
-            setCustomerSelected(index)
-        })
+                setCustomerSelected(index)
+            })
 
-        .catch((error) => {
-            console.log('====================================');
-            console.log(error);
-            console.log('====================================');
-            toast.error("Chamado Não encontrado")
-        })
+            .catch((error) => {
+                console.log('====================================');
+                console.log(error);
+                console.log('====================================');
+                toast.error("Chamado Não Encontrado")
+            })
     }
 
     function handleSelectChange(e) {
@@ -52,11 +54,35 @@ export default function New() {
 
     function handleClientSelectChange(e) {
         setCustomerSelected(e.target.value);
-    }    
+    }
 
-    async function handleRegister(e){
+    async function handleRegister(e) {
         e.preventDefault();
-    
+
+        if (idCustomer) {
+            //Atualizando chamado
+            const docRef = doc(db, "tickets", id)
+            await updateDoc(docRef, {
+                client: customers[customerSelected].nomeFantasia,
+                clientId: customers[customerSelected].id,
+                assunto: assunto,
+                complemento: complemento,
+                status: status,
+                userId: user.uid
+            })
+
+            .then(() =>{
+                toast.success('Chamado Atualizado com Sucesso!')
+            })
+
+            .catch((error) =>{
+                toast.error('Falha ao Atualizar o Chamado!')
+                console.log(error);
+            })
+
+            return
+        }
+
         await addDoc(collection(db, "tickets"), {
             created: new Date(),
             client: customers[customerSelected].nomeFantasia,
@@ -64,20 +90,20 @@ export default function New() {
             assunto: assunto,
             complemento: complemento,
             status: status,
-            userId: user.uid    
+            userId: user.uid
         })
-        .then(() => {
-            toast.success('Chamado Registrado !');
-            setAssunto('');
-            setComplemento('');
-            setCustomerSelected(0);
-        })
-        .catch((error) =>{
-            toast.error("Falha ao Registrar !");
-            console.log(error);
-        });
+            .then(() => {
+                toast.success('Chamado Registrado !');
+                setAssunto('');
+                setComplemento('');
+                setCustomerSelected(0);
+            })
+            .catch((error) => {
+                toast.error("Falha ao Registrar !");
+                console.log(error);
+            });
     }
-    
+
 
     useEffect(() => {
         async function loadCustomers() {
@@ -95,7 +121,7 @@ export default function New() {
                         setLoadCustomer(false)
                         setCustomers(lista)
 
-                        if (id){
+                        if (id) {
                             loadId(lista)
                         }
 
@@ -111,7 +137,7 @@ export default function New() {
 
         loadCustomers()
 
-        
+
     }, [id])
 
 
@@ -122,7 +148,7 @@ export default function New() {
 
             <div className='content'>
 
-                <Title name={'Novo Chamado'}>
+                <Title name={id ? "Editando Chamado" : "Novo Chamado"}>
                     <FiPlusCircle size={25} />
                 </Title>
 

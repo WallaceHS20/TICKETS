@@ -24,6 +24,41 @@ export default function New() {
     const [customerSelected, setCustomerSelected] = useState(0)
     const [idCustomer, setIdCustomer] = useState(false)
 
+    useEffect(() => {
+        async function loadCustomers() {
+            const querySnapShot = await getDocs(listRef)
+                .then((snapshot) => {
+
+                    let lista = []
+
+                    snapshot.forEach((doc) => {
+                        lista.push({
+                            id: doc.id,
+                            nomeFantasia: doc.data().nomeFantasia
+                        })
+
+                        setLoadCustomer(false)
+                        setCustomers(lista)
+
+                        if (id) {
+                            loadId(lista)
+                        }
+
+                    })
+                })
+
+                .catch((error) => {
+                    console.log(error);
+                    toast.error("Falha ao coletar Clientes")
+                    setLoadCustomer(false)
+                })
+        }
+
+        loadCustomers()
+
+
+    }, [id])
+
     function handleOptionChanged(e) {
         setStatus(e.target.value)
     }
@@ -103,44 +138,6 @@ export default function New() {
                 console.log(error);
             });
     }
-
-
-    useEffect(() => {
-        async function loadCustomers() {
-            const querySnapShot = await getDocs(listRef)
-                .then((snapshot) => {
-
-                    let lista = []
-
-                    snapshot.forEach((doc) => {
-                        lista.push({
-                            id: doc.id,
-                            nomeFantasia: doc.data().nomeFantasia
-                        })
-
-                        setLoadCustomer(false)
-                        setCustomers(lista)
-
-                        if (id) {
-                            loadId(lista)
-                        }
-
-                    })
-                })
-
-                .catch((error) => {
-                    console.log(error);
-                    toast.error("Falha ao coletar Clientes")
-                    setLoadCustomer(false)
-                })
-        }
-
-        loadCustomers()
-
-
-    }, [id])
-
-
 
     return (
         <div>

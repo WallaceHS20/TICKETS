@@ -8,6 +8,7 @@ import { Link } from "react-router-dom"
 import { collection, getDocs, orderBy, limit, startAfter, query } from 'firebase/firestore'
 import { db } from '../../services/firebaseConnection'
 import { format } from 'date-fns'
+import Modal from "../../components/Modal"
 
 export default function Dashboard() {
   const { logOut } = useContext(AuthContext);
@@ -17,6 +18,8 @@ export default function Dashboard() {
   const [isEmpty, setIsEmpty] = useState(false)
   const [lastDocs, setLastDocs] = useState()
   const [loadMore, setLoadMore] = useState(false)
+  const [showModal, setShowModal] = useState(false)
+  const [detail, setDetail] = useState()
 
   async function handleLogout() {
     await logOut()
@@ -24,6 +27,8 @@ export default function Dashboard() {
 
   async function updateState(query) {
     const isColletEmpty = query.size === 0
+    const numberOfDocs = query.docs.length;
+    const limitOfDocs = 1;
 
     if (!isColletEmpty) {
       let lista = []
@@ -48,6 +53,8 @@ export default function Dashboard() {
 
       setChamados(chamados => [...chamados, ...lista])
 
+      setIsEmpty(numberOfDocs < limitOfDocs);
+
 
     }
     else{
@@ -65,6 +72,11 @@ export default function Dashboard() {
     const querySnapshot = await getDocs(q);
     await updateState(querySnapshot);
 
+  }
+
+  function showPostModal(item){
+    setShowModal(!showModal)
+    setDetail(item)
   }
 
   useEffect(() => {
@@ -157,7 +169,7 @@ export default function Dashboard() {
                         </td>
                         <td data-label="Cadastrado">{item.created}</td>
                         <td data-label="#">
-                          <button className="action" style={{ backgroundColor: '#3583f6' }}>
+                          <button className="action" style={{ backgroundColor: '#3583f6' }} onClick={() => showPostModal(item)}>
                             <FiSearch color='#FFF' size={17} />
                           </button>
                           <Link to={`/new/${item.id}`} className="action" style={{ backgroundColor: '#f6a935' }}>
@@ -175,7 +187,12 @@ export default function Dashboard() {
             </>
           )}
         </>
-
+        {showModal && 
+        <Modal
+        conteudo={detail}
+        close={() => setShowModal(!showModal)}
+        />
+        }
       </div>
 
     </div>

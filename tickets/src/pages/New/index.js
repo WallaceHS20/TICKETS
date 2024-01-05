@@ -2,6 +2,7 @@ import Header from '../../components/Header'
 import Title from '../../components/Title'
 import { FiPlusCircle } from 'react-icons/fi'
 import { useState, useEffect, useContext } from 'react'
+import { useParams } from 'react-router-dom'
 import { db } from '../../services/firebaseConnection'
 import { AuthContext } from '../../contexts/auth'
 import { collection, getDoc, getDocs, doc, addDoc } from 'firebase/firestore'
@@ -11,6 +12,7 @@ import { toast } from 'react-toastify'
 export default function New() {
 
     const { user } = useContext(AuthContext)
+    const { id } = useParams()
     const [loadCustomer, setLoadCustomer] = useState(true)
     const listRef = collection(db, "customers")
 
@@ -22,6 +24,26 @@ export default function New() {
 
     function handleOptionChanged(e) {
         setStatus(e.target.value)
+    }
+
+    async function loadId(lista){
+        const docRef = doc(db, "tickets", id);
+        await getDoc(docRef)
+        .then((response) =>{
+            setAssunto(response.data().assunto)
+            setComplemento(response.data().complemento)
+            setStatus(response.data().status)
+            let index = lista.findIndex(item => item.id === response.data().clientId)
+
+            setCustomerSelected(index)
+        })
+
+        .catch((error) => {
+            console.log('====================================');
+            console.log(error);
+            console.log('====================================');
+            toast.error("Chamado Não encontrado")
+        })
     }
 
     function handleSelectChange(e) {
@@ -73,6 +95,10 @@ export default function New() {
                         setLoadCustomer(false)
                         setCustomers(lista)
 
+                        if (id){
+                            loadId(lista)
+                        }
+
                     })
                 })
 
@@ -84,7 +110,11 @@ export default function New() {
         }
 
         loadCustomers()
-    }, [])
+
+        
+    }, [id])
+
+
 
     return (
         <div>

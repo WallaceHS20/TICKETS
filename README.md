@@ -1,7 +1,6 @@
 <img width=100% src="https://capsule-render.vercel.app/api?type=waving&color=A020F0&height=180&section=header&text=SISTEMA+DE+CHAMADOS&animation=fadeIn&fontAlignY=35&fontSize=30&fontColor=FFFAFA"/>
 
-Recentemente iniciei meus estudos em ReactJS e hoje finalizei meu primeiro app. O projeto foi uma imersão profunda nos conceitos fundamentais de ReactJS, incluindo react hooks, ciclos de vida, além de práticas avançadas como o consumo de APIs e gerenciamento de requisições.
-O PrimeFlix é inspirado nos sistemas de streaming líderes de mercado, refletindo tanto a funcionalidade quanto a estética dessas plataformas.
+Este projeto, em particular, simula um sistema de chamados, permitindo-me aprimorar minhas habilidades práticas com gerenciamento de estado do Context API e explorar a interação com o Firebase para operações de banco de dados NoSQL.
 
 ## Tecnologias 
 
@@ -17,7 +16,7 @@ O PrimeFlix é inspirado nos sistemas de streaming líderes de mercado, refletin
 
 ## Resultado
 
-https://github.com/WallaceHS20/PRIMEFLIX-REACT/assets/101594950/b9b3369e-de57-4d6f-9a01-a162156a4054
+https://github.com/WallaceHS20/TICKETS/assets/101594950/05cc5d18-398e-420d-9189-9b53981ace17
 
 ## Instalação
 
@@ -43,8 +42,7 @@ http://localhost:3000
 
 ------------
 
-LinkedIn: https://www.linkedin.com/feed/update/urn:li:activity:7143399568875982848/
-
+LinkedIn: https://www.linkedin.com/feed/update/urn:li:activity:7150286665960390656/
 ------------
 
 <img width=100% src="https://capsule-render.vercel.app/api?type=waving&color=A020F0&height=180&section=footer"/>

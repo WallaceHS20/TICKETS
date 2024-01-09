@@ -42,6 +42,7 @@ export default function New() {
 
                         if (id) {
                             loadId(lista)
+                            setIdCustomer(true)
                         }
 
                     })

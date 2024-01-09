@@ -45,7 +45,7 @@ export default function SignIn() {
                     />
 
                     <button type='submit'>
-                        {loadingAuth ? 'Carregando...' : 'Cadastrar'}
+                        {loadingAuth ? 'Carregando...' : 'Acessar'}
                     </button>
 
                 </form>

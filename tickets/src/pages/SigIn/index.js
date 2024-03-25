@@ -14,8 +14,6 @@ export default function SignIn() {
 
     const { signIn, loadingAuth, signed } = useContext(AuthContext);
 
-    console.log('olha essa poha ', signed);
-
     async function handleSignIn(e) {
         e.preventDefault();
         await signIn(email, password)
